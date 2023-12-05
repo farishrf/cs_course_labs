@@ -43,7 +43,10 @@ int main() {
 
     /*
      * Task 2 - LAB8
-     * Combine arr1 + arr2
+     * Write a C ++ program which takes two arrays of 5 integers each , arrA and arrB , the user
+        will enter the values of arrays. arrC is a third integer array with size (10), the program should
+        put into arrC the values of arrA and arrB in order. Then the program will display arrC
+        elements.
      */
 
     int arr1[5];

@@ -88,17 +88,17 @@ bool getUserInput(BmiCalculator& bmiInstance) {
     double height, weight;
 
     cout << "Enter your age (from 20 and older) \n";
-    std::cin >> age;
+    cin >> age;
 
     if(age < 20) {
         cout << "We cannot provide you with accurate BMI calculations for teenagers, sorry! \n";
         return false;
     }
     cout << "Enter your height in cm: \n";
-    std::cin >> height;
+    cin >> height;
 
     cout << "Enter your weight in kg: \n";
-    std::cin >> weight;
+    cin >> weight;
 
     if (height <= 0 || weight <= 0) {
         cout << "Error: Invalid height or weight\n";

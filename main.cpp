@@ -1,145 +1,120 @@
 #include <iostream>
 using namespace std;
 
+/*
+Disclaimer:
+    This BMI Calculator code is provided for educational purposes only and is not intended for real-world applications.
+    It is part of an ongoing assignment in a Computer Science fundamental course for C++ at the Imam Abdulrahman Bin Faisal University (IAU).
+    The code may not adhere to best practices, may lack robust error handling, and should not be used in production environments.
+    This code is a student exercise.
+    References:
+    World Health Organization's (WHO) recommended body weight based on BMI values for adults. It is used for both men and women, age 20 or older.
+*/
+
+class BmiCalculator {
+public:
+    double height,weight,bmi;
+    void setHeight(double heightEntered) {
+        this->height = heightEntered;
+    }
+    void setWeight(double weightEntered) {
+        this->weight = weightEntered;
+    }
+    double getBmi() {
+        double heightCalc = this->height/100; // converting to meters
+        this->bmi = this->weight / (heightCalc * heightCalc);
+        return this->bmi;
+    }
+    string getBmiType() const {
+        // Applying arrays, simple yes! but effective
+        // We could have used Enums too but keeping it simple for now.
+        string categories[] = {
+                "Severe Thinness",
+                "Moderate Thinness",
+                "Mild Thinness",
+                "Normal",
+                "Overweight",
+                "Obese Class 1",
+                "Obese Class 2",
+                "Obese Class 3"
+        };
+        if (this->bmi < 16) return categories[0];
+        if (this->bmi >= 16 && this->bmi < 17) return categories[1];
+        if (this->bmi >= 17 && this->bmi < 18.5) return categories[2];
+        if (this->bmi >= 18.5 && this->bmi < 25) return categories[3];
+        if (this->bmi >= 25 && this->bmi < 30) return categories[4];
+        if (this->bmi >= 30 && this->bmi < 35) return categories[5];
+        if (this->bmi >= 35 && this->bmi <= 40) return categories[6];
+        if (this->bmi > 40) return categories[7];
+
+        return "Unknown";
+    }
+};
+
+void helloMessage();
+bool getUserInput(BmiCalculator& bmiInstance);
+
 int main() {
-    /*
-     * Task 1 - LAB8:
-     * Write a C++ program which takes array of integers where the size is
-        defined by the user and find the sum , average , largest and the
-        smallest number .
-    */
-    int arrSize, sum = 0;
-    cout << "Enter Number arrSize: ";
-    cin >> arrSize;
-    if(arrSize <= 0) {
-        cout << "Enter a valid arrSize please";
-        return 1;
-    }
-    int arrOfNumbers[arrSize];
-    cout << "Enter [" << "" << arrSize << "] numbers \n";
-    for(int i = 0; i < arrSize; i++) {
-        cin >> arrOfNumbers[i];
-    }
+    int choice;
+    bool continueProgram = true;
 
-    cout << "Number of values is: " << arrSize << endl;
-    // Assuming first element is max and min
-    int max = arrOfNumbers[0];
-    int min = arrOfNumbers[0];
+    do {
+        helloMessage();
+        cin >> choice;
 
-    for(int number : arrOfNumbers) {
-        cout << number << "  " << endl;
-        if(number > max){
-            max = number;
-        } else {
-            min = number;
-        }
-        sum += number;
-    }
+        if (choice == 1) {
+            BmiCalculator bmiInstance{};
 
-    cout << "The sum is: " << sum << endl;
-    cout << "The average is: " << (sum / arrSize) << endl;
-    cout << "The largest is: " << max << endl;
-    cout << "The smallest is: " << min << endl;
-
-    /*
-     * Task 2 - LAB8
-     * Write a C ++ program which takes two arrays of 5 integers each , arrA and arrB , the user
-        will enter the values of arrays. arrC is a third integer array with size (10), the program should
-        put into arrC the values of arrA and arrB in order. Then the program will display arrC
-        elements.
-     */
-
-    int arr1[5];
-    int arr2[5];
-    int arrC[10];
-    cout << "please enter array 1" << endl;
-    for(int i = 0; i < 5; i++) {
-        cin >> arr1[i];
-    }
-    cout << "please enter array 2" << endl;
-
-    for(int i = 0; i < 5; i++) {
-        cin >> arr2[i];
-    }
-
-    for(int i =0; i < 5; i++) {
-        arrC[i] = arr1[i];
-        arrC[i+5] = arr2[i];
-    }
-    cout << "The value of arrC" << endl;
-    for(int n : arrC) {
-        cout << n << ", ";
-    }
-
-    /*
-     * Task 3 - LAB8
-     * Write a program that reads in ten numbers and displays the number of
-        distinct numbers and the distinct numbers separated by exactly one
-        space (i.e., if a number appears multiple times, it is displayed only once).
-        Hint: Read a number and store it to an array if it is new. If the number is
-        already in the array, ignore it.) After the input, the array contains the
-        distinct numbers.
-     */
-    int arr[10], count = 0;
-
-    for(int i =0; i < 10; i++) {
-        bool isDist = true; // Assuming by default the number is district
-        int num;
-        cin >> num;
-
-        // check current number
-        for(int j =0; j < i; j++) {
-            if(num == arr[j]) {
-                isDist = false;
-                break;
+            if(!getUserInput(bmiInstance)) {
+                continueProgram = false;
+            } else {
+                double bmi = bmiInstance.getBmi();
+                cout << "Your BMI: " << bmi << endl;
+                cout << bmiInstance.getBmiType() << endl;
+                continueProgram = false;
             }
+        } else if (choice != 0) {
+            cout << "You entered a wrong choice: (" << choice << "): \n Please choose between 1 or 0 \n";
         }
 
-        if(isDist) {
-            arr[count++] = num;
-        }
+    } while (choice != 0 && continueProgram);
 
-    }
-
-    for(int i = 0; i<count; i++) {
-        cout << arr[i] << " ";
-    }
-
-    /*
-     * Task 4 - LAB8
-     * Write a program that reads single integer array size and all elements one
-by one , sort all numbers ascending and print (unsorted and sorted)
-array values.
-     */
-    int size, temp;
-    cout << "Please, Enter array size";
-    cin >> size;
-    int arrNums[size];
-    cout << "Enter [" << size << "] numbers" << endl;
-    for(int i=0; i < size; i++){
-        cout << "Enter value - [" << i+1 <<  "]" << endl;
-        cin >> arrNums[i];
-    }
-    cout << "Result is" << endl;
-    for (int i = 0; i < size; ++i) {
-        cout << arrNums[i] << " ";
-    }
-
-    // sort ascending
-    for (int i = 0; i < size; ++i) {
-        for(int j = i+1; j < size; j++) {
-            if(arrNums[i] > arrNums[j]) {
-                temp = arrNums[i];
-                arrNums[i] = arrNums[j];
-                arrNums[j] = temp;
-            }
-        }
-    }
-    cout << endl;
-
-    for (int i = 0; i < size; ++i) {
-        cout << arrNums[i] << " ";
-    }
-
+    cout << "Have a nice day! \n";
     return 0;
+}
+
+bool getUserInput(BmiCalculator& bmiInstance) {
+    int age;
+    double height, weight;
+
+    cout << "Enter your age (from 20 and older) \n";
+    std::cin >> age;
+
+    if(age < 20) {
+        cout << "We cannot provide you with accurate BMI calculations for teenagers, sorry! \n";
+        return false;
+    }
+    cout << "Enter your height in cm: \n";
+    std::cin >> height;
+
+    cout << "Enter your weight in kg: \n";
+    std::cin >> weight;
+
+    if (height <= 0 || weight <= 0) {
+        cout << "Error: Invalid height or weight\n";
+        return false;
+    }
+
+    bmiInstance.setHeight(height);
+    bmiInstance.setWeight(weight);
+    return true;
+
+}
+
+void helloMessage() {
+    cout << "************************** \n";
+    cout << "* Welcome to BMI Calculator *\n";
+    cout << "* Enter 1 to begin *\n";
+    cout << "* Enter 0 to exit *\n";
+    cout << "************************** \n";
 }
